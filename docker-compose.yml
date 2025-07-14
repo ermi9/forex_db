@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+
+  mongo:
+    image: mongo:6
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: alertsdb
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  neo4j:
+    image: neo4j:5.12
+    container_name: neo4j
+    environment:
+      NEO4J_AUTH: neo4j/strongpass123
+    ports:
+      - "7474:7474"   
+      - "7687:7687"  
+    volumes:
+      - neo4j_data:/data
+
+  mosquitto:
+    image: eclipse-mosquitto
+    container_name: mosquitto
+    ports:
+      - "1884:1883"
+      - "9001:9001"
+    volumes:
+      - mosquitto_data:/mosquitto/data
+      - mosquitto_config:/mosquitto/config
+
+volumes:
+  mongo_data:
+  mysql_data:
+  neo4j_data:
+  mosquitto_data:
+  mosquitto_config:
